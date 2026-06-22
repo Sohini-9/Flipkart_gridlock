@@ -336,10 +336,10 @@ def build_map_html(mappls_key: str, overview: dict, prediction_result: dict | No
             window.__m7StreamlitMapReady = () => window.mappls;
             setStatus("Loading MapMyIndia/Mappls SDK...");
             await loadScriptOnce(src);
-            if (window.mappls) {
-            console.log("MAPPLS LOADED", window.mappls);
-            return window.mappls;
-          }
+            if (window.mappls) {{
+              console.log("MAPPLS LOADED", window.mappls);
+              return window.mappls;
+            }}
             errors.push(`Loaded but no window.mappls: ${{src.replace(mapplsKey, "****")}}`);
           }} catch (err) {{
             errors.push(err && err.message ? err.message : String(err));
