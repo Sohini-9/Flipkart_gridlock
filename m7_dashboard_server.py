@@ -35,7 +35,7 @@ import joblib
 
 HERE = Path(__file__).resolve().parent
 WEB_DIR = HERE / "web"
-DEFAULT_PIPELINE_DIR = Path(r"./")
+DEFAULT_PIPELINE_DIR = HERE
 PIPELINE_DIR = Path(os.environ.get("THEME2_PIPELINE_DIR", str(DEFAULT_PIPELINE_DIR))).resolve()
 HOST = os.environ.get("M7_HOST", "127.0.0.1")
 PORT = int(os.environ.get("M7_PORT", "8057"))
