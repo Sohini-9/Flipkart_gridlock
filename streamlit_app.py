@@ -525,7 +525,7 @@ def render_map(mappls_key: str, overview: dict, prediction_result: dict | None) 
     map_file.write_text(map_html, encoding="utf-8")
     map_url = f"http://localhost:{MAP_RUNTIME_PORT}/map.html?v={datetime.now().timestamp()}"
     if hasattr(st, "iframe"):
-        st.iframe(map_url, height=630, scrolling=False)
+        st.iframe(map_url, height=630)
     else:
         st.components.v1.iframe(map_url, height=630, scrolling=False)
 
