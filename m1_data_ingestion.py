@@ -12,8 +12,8 @@ Output : clean_incidents.csv
 import pandas as pd
 import numpy as np
 
-RAW_PATH = "/content/drive/MyDrive/flipkart/Astram event data_anonymized - Astram event data_anonymizedb40ac87.csv"
-OUTPUT_PATH = "/content/drive/MyDrive/flipkart/clean_incidents.csv"
+RAW_PATH = "Astram event data_anonymized - Astram event data_anonymizedb40ac87.csv"
+OUTPUT_PATH = "clean_incidents.csv"
 
 # Bengaluru bounding box - used to sanity check lat/long
 LAT_MIN, LAT_MAX = 12.7, 13.2
