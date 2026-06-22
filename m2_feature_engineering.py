@@ -55,13 +55,13 @@ import pickle
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
 
-INPUT_PATH = "/content/drive/MyDrive/flipkart/clean_incidents.csv"
-FEATURE_OUTPUT_PATH = "/content/drive/MyDrive/flipkart/feature_matrix.csv"
-SIGNALS_OUTPUT_PATH = "/content/drive/MyDrive/flipkart/cis_signal_tables.json"
-CORRIDOR_RECON_OUTPUT_PATH = "/content/drive/MyDrive/flipkart/corridor_reconstruction.csv"
-CORRIDOR_MODEL_PATH = "/content/drive/MyDrive/flipkart/corridor_model.pkl"
-ENCODING_MAPS_PATH = "/content/drive/MyDrive/flipkart/category_encoding_maps.json"
-POLICE_STATION_NN_PATH = "/content/drive/MyDrive/flipkart/police_station_nn.pkl"
+INPUT_PATH = "clean_incidents.csv"
+FEATURE_OUTPUT_PATH = "feature_matrix.csv"
+SIGNALS_OUTPUT_PATH = "cis_signal_tables.json"
+CORRIDOR_RECON_OUTPUT_PATH = "corridor_reconstruction.csv"
+CORRIDOR_MODEL_PATH = "corridor_model.pkl"
+ENCODING_MAPS_PATH = "category_encoding_maps.json"
+POLICE_STATION_NN_PATH = "police_station_nn.pkl"
 
 CORRIDOR_CONFIDENCE_THRESHOLD = 0.80  # LOCKED - matches notebook's RF+KNN ensemble.
                                        # Also requires RF/KNN agreement (see apply_corridor_reconstruction).
