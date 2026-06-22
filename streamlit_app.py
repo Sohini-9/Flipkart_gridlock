@@ -2,15 +2,22 @@ from __future__ import annotations
 
 import json
 import os
+import tempfile
+import threading
 from datetime import datetime
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 import m7_dashboard_server as m7
+
+
+MAP_RUNTIME_DIR = Path(tempfile.gettempdir()) / "m7_streamlit_mappls_runtime"
+MAP_RUNTIME_PORT = int(os.environ.get("M7_MAP_RUNTIME_PORT", "8502"))
+MAP_SERVER_STARTED = False
 
 
 st.set_page_config(
@@ -228,6 +235,13 @@ def build_map_html(mappls_key: str, overview: dict, prediction_result: dict | No
     payload_json = json.dumps(payload, ensure_ascii=False)
     key_json = json.dumps(mappls_key)
     return f"""
+    <!doctype html>
+    <html>
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
     <div id="m7-map-wrap">
       <div id="m7-map"></div>
       <div class="legend">
@@ -454,12 +468,41 @@ def build_map_html(mappls_key: str, overview: dict, prediction_result: dict | No
           setStatus(dashboardData.prediction ? "Live prediction and operations layers loaded." : "Historical heat, corridors, and forecast hotspots loaded.");
         }} catch (err) {{
           console.error(err);
-          setStatus(`Map failed: ${{err && err.message ? err.message : String(err)}}`);
+          setStatus(`Mappls map failed: ${{err && err.message ? err.message : String(err)}}`);
         }}
       }}
       draw();
     </script>
+    </body>
+    </html>
     """
+
+
+def ensure_map_server() -> None:
+    global MAP_SERVER_STARTED
+    if MAP_SERVER_STARTED:
+        return
+    MAP_RUNTIME_DIR.mkdir(parents=True, exist_ok=True)
+
+    class QuietHandler(SimpleHTTPRequestHandler):
+        def log_message(self, format: str, *args: Any) -> None:
+            return
+
+        def end_headers(self) -> None:
+            self.send_header("Cache-Control", "no-store")
+            super().end_headers()
+
+    def serve() -> None:
+        handler = lambda *args, **kwargs: QuietHandler(*args, directory=str(MAP_RUNTIME_DIR), **kwargs)
+        try:
+            server = ThreadingHTTPServer(("127.0.0.1", MAP_RUNTIME_PORT), handler)
+            server.serve_forever()
+        except OSError:
+            pass
+
+    thread = threading.Thread(target=serve, name="m7-mappls-map-server", daemon=True)
+    thread.start()
+    MAP_SERVER_STARTED = True
 
 
 def render_map(mappls_key: str, overview: dict, prediction_result: dict | None) -> None:
@@ -469,14 +512,22 @@ def render_map(mappls_key: str, overview: dict, prediction_result: dict | None) 
             <div class="m7-section" style="height: 610px; display: flex; align-items: center; justify-content: center; text-align: center; background: #e8eef5;">
               <div>
                 <h3>Enter a MapMyIndia/Mappls Web SDK key</h3>
-                <p style="color: #64748b; margin: 0;">The map renders only after a runtime key is provided in the sidebar.</p>
+                <p style="color: #64748b; margin: 0;">The operations map renders only with a Mappls Web SDK key.</p>
               </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
         return
-    components.html(build_map_html(mappls_key, overview, prediction_result), height=630, scrolling=False)
+    ensure_map_server()
+    map_html = build_map_html(mappls_key, overview, prediction_result)
+    map_file = MAP_RUNTIME_DIR / "map.html"
+    map_file.write_text(map_html, encoding="utf-8")
+    map_url = f"http://localhost:{MAP_RUNTIME_PORT}/map.html?v={datetime.now().timestamp()}"
+    if hasattr(st, "iframe"):
+        st.iframe(map_url, height=630, scrolling=False)
+    else:
+        st.components.v1.iframe(map_url, height=630, scrolling=False)
 
 
 def event_payload(causes: list[str]) -> dict | None:
