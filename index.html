@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>M7 Traffic Operations Dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="control-panel">
+      <div class="brand-row">
+        <div>
+          <h1>Traffic Operations Dashboard</h1>
+          <p id="pipelinePath">Loading pipeline artifacts...</p>
+        </div>
+        <div class="status-pill" id="mapProvider">Map loading</div>
+      </div>
+
+      <form id="eventForm" class="event-form">
+        <div class="field-grid">
+          <label>
+            <span>Latitude</span>
+            <input name="latitude" type="number" step="0.000001" value="12.9716" required>
+          </label>
+          <label>
+            <span>Longitude</span>
+            <input name="longitude" type="number" step="0.000001" value="77.5573" required>
+          </label>
+          <label>
+            <span>Cause</span>
+            <select name="event_cause" id="causeSelect" required>
+              <option value="vehicle_breakdown">vehicle_breakdown</option>
+              <option value="vip_movement">vip_movement</option>
+              <option value="water_logging">water_logging</option>
+              <option value="accident">accident</option>
+              <option value="construction">construction</option>
+              <option value="tree_fall">tree_fall</option>
+              <option value="pot_holes">pot_holes</option>
+            </select>
+          </label>
+          <label>
+            <span>Event Type</span>
+            <select name="event_type" required>
+              <option value="unplanned">unplanned</option>
+              <option value="planned">planned</option>
+            </select>
+          </label>
+          <label>
+            <span>Priority</span>
+            <select name="priority" required>
+              <option value="LOW">LOW</option>
+              <option value="HIGH">HIGH</option>
+            </select>
+          </label>
+          <label>
+            <span>Timestamp</span>
+            <input name="timestamp" type="datetime-local" required>
+          </label>
+        </div>
+
+        <label class="wide">
+          <span>Description</span>
+          <textarea name="description" rows="3">lorry breakdown on left lane, slow traffic</textarea>
+        </label>
+        <label class="wide">
+          <span>Address</span>
+          <input name="address" value="Mysore Road, Bengaluru">
+        </label>
+
+        <div class="switch-row">
+          <label class="check">
+            <input name="was_escalated" type="checkbox">
+            <span>Escalated</span>
+          </label>
+          <label class="check">
+            <input name="authenticated" type="checkbox" checked>
+            <span>Authenticated</span>
+          </label>
+          <button type="button" id="sampleHigh">High closure sample</button>
+          <button type="submit" id="predictButton">Run M5 + M6</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="map-section">
+      <div id="map"></div>
+      <div class="map-legend">
+        <span><i class="dot heat"></i>Historical</span>
+        <span><i class="dot closure"></i>Closure</span>
+        <span><i class="dot forecast"></i>Forecast hotspot</span>
+        <span><i class="line route"></i>Diversion</span>
+      </div>
+      <div id="mapStatus" class="map-status">Preparing map...</div>
+    </section>
+
+    <section class="results-grid">
+      <article class="panel kpis">
+        <h2>Live Prediction</h2>
+        <div class="metric-row">
+          <div>
+            <span>Closure probability</span>
+            <strong id="closureProbability">--</strong>
+          </div>
+          <div>
+            <span>CIS</span>
+            <strong id="cisScore">--</strong>
+          </div>
+          <div>
+            <span>Tier</span>
+            <strong id="finalTier">--</strong>
+          </div>
+        </div>
+        <div id="liveDetails" class="detail-list"></div>
+      </article>
+
+      <article class="panel resources">
+        <h2>Resource Plan</h2>
+        <div class="resource-counts">
+          <div><span>Officers</span><strong id="officerCount">--</strong></div>
+          <div><span>Barricades</span><strong id="barricadeCount">--</strong></div>
+          <div><span>Diversion</span><strong id="diversionPriority">--</strong></div>
+        </div>
+        <p id="resourceRationale">Run a live event to generate the rule-engine plan.</p>
+      </article>
+
+      <article class="panel">
+        <h2>Model Readout</h2>
+        <div id="modelReadout" class="detail-list"></div>
+      </article>
+
+      <article class="panel">
+        <h2>Forecast Hotspots</h2>
+        <div id="forecastList" class="rank-list"></div>
+      </article>
+    </section>
+
+    <section class="bottom-grid">
+      <article class="panel">
+        <h2>Historical Summary</h2>
+        <div class="metric-row compact">
+          <div><span>Incidents</span><strong id="incidentCount">--</strong></div>
+          <div><span>Closure rate</span><strong id="closureRate">--</strong></div>
+          <div><span>Corridors</span><strong id="corridorCount">--</strong></div>
+        </div>
+      </article>
+      <article class="panel">
+        <h2>Top Corridors</h2>
+        <div id="corridorList" class="rank-list"></div>
+      </article>
+      <article class="panel">
+        <h2>Top Causes</h2>
+        <div id="causeList" class="rank-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

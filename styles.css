@@ -1,0 +1,415 @@
+:root {
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --ink: #17202c;
+  --muted: #647084;
+  --line: #d9e0ea;
+  --accent: #0f766e;
+  --accent-2: #2563eb;
+  --danger: #c2410c;
+  --warn: #b45309;
+  --good: #15803d;
+  --shadow: 0 10px 24px rgba(21, 32, 48, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.shell {
+  width: min(1600px, 100%);
+  margin: 0 auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 430px 1fr;
+  gap: 16px;
+}
+
+.control-panel,
+.panel,
+.map-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.control-panel {
+  padding: 16px;
+}
+
+.brand-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.brand-row p,
+.panel p,
+label span,
+.detail-list,
+.rank-list {
+  color: var(--muted);
+}
+
+.brand-row p {
+  margin-top: 6px;
+  font-size: 12px;
+  word-break: break-word;
+}
+
+.status-pill {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #e7f5f3;
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.event-form {
+  display: grid;
+  gap: 12px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+}
+
+label span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: #fbfcfe;
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: var(--ink);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.switch-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.check {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.check input {
+  width: 17px;
+  height: 17px;
+}
+
+button {
+  border: 1px solid var(--line);
+  background: #eef3f8;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.map-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 620px;
+}
+
+#map {
+  position: absolute;
+  inset: 0;
+  background: #dfe7ef;
+}
+
+.map-legend,
+.map-status {
+  position: absolute;
+  left: 14px;
+  z-index: 800;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.map-legend {
+  bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  padding: 9px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.map-status {
+  top: 14px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dot,
+.line {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.heat {
+  background: #f97316;
+}
+
+.dot.closure {
+  background: #dc2626;
+}
+
+.dot.forecast {
+  background: #7c3aed;
+}
+
+.line.route {
+  width: 18px;
+  height: 3px;
+  background: #2563eb;
+}
+
+.results-grid,
+.bottom-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 16px;
+}
+
+.results-grid {
+  grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
+}
+
+.bottom-grid {
+  grid-template-columns: 1fr 1.1fr 1.1fr;
+}
+
+.panel {
+  padding: 14px;
+  min-width: 0;
+}
+
+.metric-row,
+.resource-counts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.metric-row div,
+.resource-counts div {
+  border: 1px solid var(--line);
+  background: #fbfcfe;
+  border-radius: 7px;
+  padding: 10px;
+}
+
+.metric-row span,
+.resource-counts span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.metric-row strong,
+.resource-counts strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.compact strong {
+  font-size: 19px;
+}
+
+.detail-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+
+.detail-list div,
+.rank-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #edf1f6;
+  padding-bottom: 6px;
+}
+
+.detail-list b,
+.rank-list b {
+  color: var(--ink);
+}
+
+.rank-list {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.rank-list div:last-child,
+.detail-list div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+#resourceRationale {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.marker-live {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dc2626;
+  border: 3px solid white;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3), 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.marker-resource {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.26);
+}
+
+.marker-resource.officer {
+  background: #2563eb;
+}
+
+.marker-resource.barricade {
+  background: #f97316;
+}
+
+@media (max-width: 1100px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .map-section {
+    min-height: 560px;
+  }
+
+  .results-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .shell {
+    padding: 10px;
+  }
+
+  .field-grid,
+  .switch-row,
+  .results-grid,
+  .bottom-grid,
+  .metric-row,
+  .resource-counts {
+    grid-template-columns: 1fr;
+  }
+
+  .map-section {
+    min-height: 520px;
+  }
+}
